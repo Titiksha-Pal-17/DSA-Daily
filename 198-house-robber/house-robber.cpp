@@ -1,23 +1,19 @@
 class Solution {
-public:
+public: 
+    int solve( vector<int>& nums , int index  , vector<int>& dp ){
+        
+        if(index<0) return 0;
+        if(dp[index]!= -1) return dp[index];
+
+        int include = nums[index] + solve(nums, index-2 , dp);
+        int exclude =0 + solve(nums , index-1 , dp) ;
+
+         return dp[index] = max(include , exclude) ;
+       
+    }
     int rob(vector<int>& nums) {
-        int n=nums.size();
-
-        //edge cases of zero element or only one element in the array 
-        if(n==0) return 0;
-        if(n==1) return nums[0];
-
-        //array dp to store maximum loot
-
-        vector<int> dp(n);
-
-        dp[0]= nums[0];
-        dp[1]=max(nums[0],nums[1]);
-
-        for (int i = 2; i < n; i++){
-            
-            dp[i]=max(dp[i-1], dp[i-2]+nums[i]);
-        }
-        return dp[n - 1];
+        int n =nums.size();
+        vector<int> dp(n, -1);
+        return solve( nums, n-1 , dp) ;
     }
 };
