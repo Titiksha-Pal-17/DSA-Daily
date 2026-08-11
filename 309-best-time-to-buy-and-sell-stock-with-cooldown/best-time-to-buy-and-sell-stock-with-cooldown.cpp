@@ -1,0 +1,31 @@
+class Solution {
+public:
+   long f(int index , int buy , vector<int> &prices , vector<vector<int>>& dp ){
+        int n =prices.size();
+        if(index >= n) return 0;
+        if( dp[index][buy]!= -1) return dp[index][buy];
+        
+        long profit=0;
+        
+        if(buy){
+            
+            profit = max( -prices[index] + f(index+1 , 0 , prices , dp)  , 
+            0 + f(index+1 , 1,prices , dp)) ;
+            
+        }
+        
+        else{      //selling or not selling  but not buying wirh cooldown 
+                    //index+2 for skipping one 
+            profit= max( prices[index] + f(index+2 , 1 , prices , dp)   , 
+            0+ f(index+1 , 0 ,prices , dp)); // only skipping in the second half so no change
+        }
+        
+        return dp[index][buy]= profit ;
+    }
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        vector<vector<int>> dp( n , vector<int>(2 , -1) );
+
+        return f( 0 , 1 , prices , dp);
+  }
+};
